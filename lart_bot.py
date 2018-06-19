@@ -14,6 +14,8 @@ from operator import itemgetter
 import configparser, sys
 # tweepy library
 import tweepy
+# radnomize hashtag search
+import random
 
 if __name__ == '__main__':
 
@@ -31,8 +33,6 @@ if __name__ == '__main__':
     # load the configuration from the config file
     config = configparser.ConfigParser()
 
-    # print for debugging
-    # print('Using config file located at: ', sys.argv[1])
 
     # read the config file and use it for the config parser
     with open(config_file_path, 'r') as f:
@@ -53,19 +53,17 @@ if __name__ == '__main__':
     # NOTE: rate limit 180 calls every 15 minutes
     api = tweepy.API(auth, wait_on_rate_limit=True)
 
-    # print tweepy version
-    # print('tweepy version ' + tweepy.__version__)
-
     # logged into the service, get the username
     logged_in_user = api.me()
-    # print('connected to api as user', logged_in_user.name)
 
     # Yesterday's date
     yy = str(date.today() - timedelta(1))
 
     # categories of hashtags used for search
-    categories = ["#art", "#contemporaryart", "#modernart", "#abstractart", "#surrealism", "#impressionism", "#modernism",
-                  "#popart", "#expressionism", "#streetart", "#cubism", "#romanticism", "#realism", "#classicism"]
+    categories = ["#streetart", "#art", "#contemporaryart", "#modernart", "#surrealism", "#impressionism", "#modernism",
+                  "#popart", "#expressionism", "#cubism", "#realism", "#classicism", "#abstract"]
+    # randomize
+    random.shuffle(categories)
 
     # contains tweets id and count of retweets and likes
     # key: tweet id  value: interest count
@@ -74,21 +72,11 @@ if __name__ == '__main__':
     # limit on API search requests
     limit = 150
 
-    # Check if tweet is stored in txt file
-    # Check if tweet was previously used by me
-    def tweeted(tweets, tweet):
-        for tweet_id in tweets:
-            if tweet_id == tweet:
-                return True
-        return False
-
     # Post 2 Tweets at a time
-    def post_tweet(lib, tweets, file, tweet_count):
+    def post_tweet(lib, tweet_count):
         for k in lib.keys():
-            if not tweeted(tweets, k):
                 try:
                     if tweet_count != 0:
-                        write_to_file(k, file)
                         api.retweet(k)
                         tweet_count -= 1
                         print("Printing tweet with id: " + str(k))
@@ -98,10 +86,7 @@ if __name__ == '__main__':
                         tweet_count += 1
                         continue
 
-    # Write to File
-    def write_to_file(id, file):
-        file.write(str(id) + "\n")
-
+    # Search for tweets based on popularity                    
     for hashtag in categories:
     # Note: search delay is about 29 sec
         for tweet in tweepy.Cursor(api.search, q=hashtag, result_type = "mix", since = yy, include_entities = True).items(limit):
@@ -113,14 +98,5 @@ if __name__ == '__main__':
     # order the lib from highest to lowest in engagement
     lib = OrderedDict(sorted(lib.items(), key = itemgetter(1), reverse = True))
 
-    # open file containing previous tweets
-    file = open("tweets.txt", "r+")
-    tweets = file.readlines()
-    post_tweet(lib, tweets, file, 2)
-    #print(tweeted(tweets, "000000000000000000"))
-
-    # for key in lib:
-    #     file.write(str(key)+"\n")
-
-    # check manually for tweet
-    # https://twitter.com/statuses/id
+    # post tweets to twitter.com
+    post_tweet(lib, 2)
