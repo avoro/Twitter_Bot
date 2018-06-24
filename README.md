@@ -3,6 +3,8 @@ This Twitter Python Bot searches for the most popular art posts on twitter.
 The bot searches for most retweeted and liked posts based on given hashtags associated with art. 
 It collects the most popular posts for the past 24 hours in a dictionary and reposts the two most popular ones. 
 
+<img src="profile.png" width="700">
+
 ## Getting Started
 
 ### Prerequisites
