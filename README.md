@@ -38,7 +38,7 @@ $ python3 lart_bot.py config.ini
 
 ## Changing the Purpose of the Bot
 This simple scipt can be extended to other functions of searching based on popularity. Since the bot's search scope is based on the provided hashtags,
-one only needs to modify the `category` list:
+one only needs to modify the `categories` list:
 ```
     categories = ["#streetart", "#art", "#contemporaryart", "#modernart", "#surrealism", "#impressionism", "#modernism",
                   "#popart", "#expressionism", "#cubism", "#realism", "#classicism", "#abstract"]
