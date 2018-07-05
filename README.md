@@ -45,7 +45,7 @@ one only needs to modify the `categories` list:
 ```
 
 ## Ways to Automate
-The best way to automate this Twitter Bot is to use `AWS Lambda` with `cron` in order to specify how often should the script be executed. 
+One way to automate this Twitter Bot is to use `AWS Lambda` with `cron` in order to specify how often should the script be executed. 
 
 ## Things to Consider
 Twitter's `STANDARD API` has its rate limits. Be cautious of `GET` request as it has a limit of 180 calls per every 15 minutes. 
