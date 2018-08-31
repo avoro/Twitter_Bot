@@ -44,8 +44,16 @@ one only needs to modify the `categories` list:
                   "#popart", "#expressionism", "#cubism", "#realism", "#classicism", "#abstract"]
 ```
 
-## Ways to Automate
+## A Way to Automate
 One way to automate this Twitter Bot is to use `AWS Lambda` with `cron` in order to specify how often should the script be executed. 
+A common error that occurs when using `AWS Lambda` is `No module named tweepy`. This happens because AWS cannot import that module. 
+So, here's a quick instruction:
+1. Go to the directory of the file
+2. Run `pip install tweepy -t lib`
+3. Cut all the files from lib and paste them in the root
+4. Compress the contents of the root folder
+5. Upload to `AWS Lambda` 
+
 
 ## Things to Consider
 Twitter's `STANDARD API` has its rate limits. Be cautious of `GET` request as it has a limit of 180 calls per every 15 minutes. 
